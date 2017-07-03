@@ -17,7 +17,7 @@ PaveAI is a B2B company that provides automated web analytics and insights to ec
  
 CactusCo (and most ecommerce firms) want to be able to predict which customers are likely to actually buy something (this is called “converting”), and not just browse. If CactusCo can identify these high-value customers, they can perform more efficient ad targeting, or inform site design to account for the behavior of likely buyers. Pave’s challenge was to develop a classification model that can utilize CactusCo’s Google Analytics data from Pave’s existing data pipeline to predict which groups of users are likely to convert. Pave wants a model that can be run every month without additional user input, and that works for all their clients. 
 
-![Model](images/model_no_touch.png)
+![Model](images/Models_No_Touch.png)
  
 **Google Analytics User Data: a Labeled Dataset** 
  
@@ -37,7 +37,7 @@ Second, interpretability is critical for this application. A Random Forest class
 
 Further, should we fit one model incorporating data from all of Pave’s clients? Or one model for each? One meta model might work for all of Pave’s customers if there are common predictors that work for ecommerce in general. Or perhaps there are clusters of ecommerce businesses that share common predictors and can benefit from pooling data. To explore the question, I looked at data from two of PaveAI’s clients that are in a roughly similar product space - think CactusCo and Fern Alley. Models that fit CactusCo performed poorly on Fern Alley, and similarly poorly on more “distant” firms such as a mattress company. While there may be richer relationships between companies that allow for cross-company predictive models, I focus in the immediate case on fitting one model for each firm. 
 
-![One Model](images/onemodel.png)
+![One Model](images/Broken_Model.png)
  
 **SMOTE and Tomek Links Correct for Class Imbalance**
  
@@ -57,7 +57,7 @@ I also consulted with a contact at a behavioral marketing firm who indicated tha
  
 I fit a Logistic Regression model for each of 5 companies. For each company, I construct a set of 3rd-degree interaction terms for each feature. This results in around 2500 features per model, so I use lasso feature selection to reduce the feature space to only the most important combinations of features. I did a grid search over regularization parameters to find the optimal value, which results in about 75 to 125 features per company. 
  
- ![Features](images/features.png)
+ ![Features](images/Freatures.png)
 
 The model outputs interpretable results. For example, the figure above shows the top 10 most predictive features for CactusCo. In the highlighted row, we see that a combination of people who 1) Are from cities with high frequency, 2) used an Android mobile device, and 3) originated from email have a higher than average probability of conversion. This is a remarkably specific result! CactusCo can reach out to this group of customers with targeted ad buys to increase conversions.
  
