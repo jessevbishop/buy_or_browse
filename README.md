@@ -46,19 +46,24 @@ For most ecommerce companies, conversions are a small percentage of all traffic.
 ![Imbalance](images/onepercent.png)
  
 SMOTE works by picking two data points from the minority class and synthesizing a “new” data point in between them.  This creates new data that looks like the real minority class so that the model can predict it more easily. Tomek Links are pairs of observations where the closest neighbor of a conversion is a nonconversion. Since they are close together, they tend to cancel each other out in the model. By removing the nonconvert from the pair, it allows the model to “read” the relatively rare conversion data point. Using these two techniques in tandem gives a significant increase in recall over benchmark correction methods.
- 
+
+**Use Domain Knowledge to Engineer Features**
+
+Without adding any outside data to my client’s data pipeline, I was able to engineer some features which turned out to contribute to the model’s predictive power. Speaking to an Insight alumnus who had worked on a similar problem in industry, I learned that in his experience, city-level demographic data was highly predictive for ecommerce conversions. However, Pave’s existing data pipeline does not include this data. the data does include a city feature, but it is a categorical variable with up to 5000 or more values. Encoding these values into dummy variables would increase the feature space dramatically, and make interaction terms infeasible to calculate. Not wanting to completely disregard the city-level data, I create a new variable “city frequency” which replaces each city with its frequency in the monthly data.
+
+I also consulted with a contact at a behavioral marketing firm who indicated that, heuristically, the best predictor of a conversion is increased frequency of sessions; if someone visits a site multiple times in one day, they are going to convert. I do not have session data at this fine granularity, but I do have “sessions this month” and “sessions last month”. I roughly approximate the increase in frequency of visits by subtracting last month sessions from this month sessions to create a “sessions velocity” feature. I construct a similar feature for “session duration”. In total, the engineered features add significantly to the model’s precision and recall.
+
 **The Resulting Model is Accurate and Interpretable**
  
 I fit a Logistic Regression model for each of 5 companies. For each company, I construct a set of 3rd-degree interaction terms for each feature. This results in around 2500 features per model, so I use lasso feature selection to reduce the feature space to only the most important combinations of features. I did a grid search over regularization parameters to find the optimal value, which results in about 75 to 125 features per company. 
  
  ![Features](images/features.png)
 
-The model outputs interpretable results. For example, the figure above shows the top 10 most predictive features for CactusCo. In the second row, a combination of people who 1) increased their sessions from last month to this month (“Session Change”), 2) used an Android mobile device, and 3) are a returning visitor have a higher than average probability of conversion. This is a remarkably specific result! CactusCo can target this group of customers with highly specific ad buys to increase conversions.
- 
-In all, the model enables my client to deliver highly specific, actionable insights to its customers. By providing an incremental benefit to Pave’s product, the model is a net win for both Pave and its customers.
+The model outputs interpretable results. For example, the figure above shows the top 10 most predictive features for CactusCo. In the highlighted row, we see that a combination of people who 1) Are from cities with high frequency, 2) used an Android mobile device, and 3) originated from email have a higher than average probability of conversion. This is a remarkably specific result! CactusCo can reach out to this group of customers with targeted ad buys to increase conversions.
  
 ![Cycle](images/cycle.png)
- 
+  
+In all, the model enables my client to deliver highly specific, actionable insights to its customers. By providing an incremental benefit to Pave’s product, the model is a net win for both Pave and its customers.
  
  
  
