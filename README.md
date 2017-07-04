@@ -55,11 +55,15 @@ I also consulted with a contact at a behavioral marketing firm who indicated tha
 
 **The Resulting Model is Accurate and Interpretable**
  
-I fit a Logistic Regression model for each of 5 companies. For each company, I construct a set of 3rd-degree interaction terms for each feature. This results in around 2500 features per model, so I use lasso feature selection to reduce the feature space to only the most important combinations of features. I did a grid search over regularization parameters to find the optimal value, which results in about 75 to 125 features per company. 
+I fit a Logistic Regression model for each of 5 companies. For each company, I construct a set of 3rd-degree interaction terms for each feature. This results in around 2500 features per model, so I use lasso feature selection to reduce the feature space to only the most important combinations of features. I did a grid search over regularization parameters to find the optimal value, which results in about 75 to 125 features per company. The figure below shows average precision and recall (across the 5 companies) for three models: (1) a baseline model without engineered features and using default sklearn class imbalance correction, (2) adding SMOTE and Tomek Link removal for class imbalance, and (3) adding engineered features.
+
+![Results](images/results_6-29.png)
+
+The feature engineering and class imbalance correction contribute significantly to the precision and recall. Recall, our most important metric, rises from 74% to 98%, and precision increases from 14% to 22%. The model also outputs interpretable results. For example, the figure below shows the top 10 most predictive features for CactusCo.
  
  ![Features](images/Freatures.png)
 
-The model outputs interpretable results. For example, the figure above shows the top 10 most predictive features for CactusCo. In the highlighted row, we see that a combination of people who 1) Are from cities with high frequency, 2) used an Android mobile device, and 3) originated from email have a higher than average probability of conversion. This is a remarkably specific result! CactusCo can reach out to this group of customers with targeted ad buys to increase conversions.
+In the highlighted row, we see that a combination of people who 1) Are from cities with high frequency, 2) used an Android mobile device, and 3) originated from email have a higher than average probability of conversion. This is a remarkably specific result! CactusCo can reach out to this group of customers with targeted ad buys to increase conversions.
  
 ![Cycle](images/cycle.png)
   
