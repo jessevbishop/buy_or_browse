@@ -5,7 +5,7 @@
  
 **Solution:** Model conversion probability for any customer. Use SMOTE and Tomek Link removal to account for heavy class imbalance, and engineer features from existing data to improve predictive power. 
  
-**Result:** Created accurate model that augments Pave’s analytics product by pointing its clients to valuable leads. The increased value to end user will drive value to my client. 
+**Result:** Created accurate model that augments Pave’s analytics product by pointing its clients to valuable leads. The increased value to end users will drive value to my client. 
 
 ![Models](images/Head.png)
  
